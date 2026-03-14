@@ -64,6 +64,26 @@ This project is built with:
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
 
+### Netlify + online session sayacı
+
+Frontend Netlify’da çalışır ama **aktif kullanıcı sayacı** ayrı bir session server ister. Netlify sadece statik site sunar; `server.js` çalışmaz.
+
+1. **Session server’ı ayrı deploy et** (Node.js + WebSocket destekleyen bir servis):
+   - [Render](https://render.com) (Web Service, ücretsiz tier)
+   - [Railway](https://railway.app)
+   - [Fly.io](https://fly.io)
+   
+   Proje kökünde: `npm run server` veya `node server.js` çalıştıracak şekilde ayarla. Root’u proje klasörü yap, build command boş bırakıp start command’a `node server.js` yaz.
+
+2. **Netlify’da environment variable ekle:**
+   - Site settings → Environment variables
+   - `VITE_SESSION_SERVER_URL` = Session server’ın tam URL’i (örn. `https://your-app.onrender.com`)
+   - Deploy’u yeniden tetikle (rebuild).
+
+3. **CORS:** Session server’da `cors({ origin: "*" })` zaten açık; Netlify domain’in engellenmez.
+
+Bundan sonra telefondan Netlify linkine girince sayfa, session server’a bağlanıp gerçek zamanlı aktif sesyon sayısını gösterebilir.
+
 ## Can I connect a custom domain to my Lovable project?
 
 Yes, you can!
